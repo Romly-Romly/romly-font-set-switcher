@@ -1,0 +1,129 @@
+{
+	"name": "romly-font-set-switcher",
+	"displayName": "Romly Font Set Switcher",
+	"publisher": "Romly",
+	"description": "フォントをコーディング用のメインフォント／日本語用のサブフォントのように二種類設定するものと考え、それぞれを予め設定しておいたリストからコマンドパレットを使って素早く選択できるようにする拡張機能です。 This extension enables users to choose a primary font and secondary font independently via the command palette, for the environment that users use two fonts at the same time for such as primary font that doesn't include Japanese characters for coding and secondary Japanese font for comments and etc.",
+	"version": "0.0.3",
+	"engines": {
+		"vscode": "^1.59.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"icon": "romly-font-set-switcher-icon.png",
+
+	"activationEvents": [
+		"onCommand:romly-font-set-switcher.switchEditorPrimaryFontSet",
+		"onCommand:romly-font-set-switcher.switchEditorSecondaryFontSet",
+		"onCommand:romly-font-set-switcher.switchMarkdownPreviewPrimaryFontSet",
+		"onCommand:romly-font-set-switcher.switchMarkdownPreviewSecondaryFontSet",
+		"onCommand:romly-font-set-switcher.switchTerminalPrimaryFontSet",
+		"onCommand:romly-font-set-switcher.switchTerminalSecondaryFontSet"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands":
+		[
+			{
+				"command": "romly-font-set-switcher.switchEditorPrimaryFontSet",
+				"title": "Switch Editor Primary Font Set",
+				"category": "Romly"
+			},
+			{
+				"command": "romly-font-set-switcher.switchEditorSecondaryFontSet",
+				"title": "Switch Editor Secondary Font Set",
+				"category": "Romly"
+			},
+			{
+				"command": "romly-font-set-switcher.switchMarkdownPreviewPrimaryFontSet",
+				"title": "Switch Markdown Preview Primary Font Set",
+				"category": "Romly"
+			},
+			{
+				"command": "romly-font-set-switcher.switchMarkdownPreviewSecondaryFontSet",
+				"title": "Switch Markdown Preview Secondary Font Set",
+				"category": "Romly"
+			},
+			{
+				"command": "romly-font-set-switcher.switchTerminalPrimaryFontSet",
+				"title": "Switch Terminal Primary Font Set",
+				"category": "Romly"
+			},
+			{
+				"command": "romly-font-set-switcher.switchTerminalSecondaryFontSet",
+				"title": "Switch Terminal Secondary Font Set",
+				"category": "Romly"
+			}
+		],
+		"configuration":
+		[
+			{
+				"title": "Romly Font Set Switcher",
+				"properties":
+				{
+					"Romly-FontSetSwitcher.primaryFontSets":
+					{
+						"type": "array",
+						"markdownDescription": "%desciption-primaryFontSets%"
+					},
+					"Romly-FontSetSwitcher.secondaryFontSets":
+					{
+						"type": "array",
+						"markdownDescription": "%desciption-secondaryFontSets%"
+					},
+					"Romly-FontSetSwitcher.editorPrimaryFont":
+					{
+						"type": "string",
+						"markdownDescription": "%description-editorPrimaryFonts%"
+					},
+					"Romly-FontSetSwitcher.editorSecondaryFont":
+					{
+						"type": "string",
+						"markdownDescription": "%description-editorSecondaryFonts%"
+					},
+					"Romly-FontSetSwitcher.markdownPreviewPrimaryFont":
+					{
+						"type": "string",
+						"markdownDescription": "%description-markdownPreviewPrimaryFonts%"
+					},
+					"Romly-FontSetSwitcher.markdownPreviewSecondaryFont":
+					{
+						"type": "string",
+						"markdownDescription": "%description-markdownPreviewSecondaryFonts%"
+					},
+					"Romly-FontSetSwitcher.terminalPrimaryFont":
+					{
+						"type": "string",
+						"markdownDescription": "%description-terminalPrimaryFonts%"
+					},
+					"Romly-FontSetSwitcher.terminalSecondaryFont":
+					{
+						"type": "string",
+						"markdownDescription": "%description-terminalSecondaryFonts%"
+					}
+				}
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.59.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.2.2",
+		"@types/node": "14.x",
+		"eslint": "^7.27.0",
+		"@typescript-eslint/eslint-plugin": "^4.26.0",
+		"@typescript-eslint/parser": "^4.26.0",
+		"glob": "^7.1.7",
+		"mocha": "^8.4.0",
+		"typescript": "^4.3.2",
+		"vscode-test": "^1.5.2"
+	}
+}

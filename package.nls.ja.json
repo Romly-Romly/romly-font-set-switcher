@@ -1,0 +1,10 @@
+{
+	"desciption-primaryFontSets": "メインフォントのリストです。詳しい記述方法はReadmeを参照して下さい。",
+	"desciption-secondaryFontSets": "サブフォントのリストです。書式はメインフォントのリストと同じです。詳しい記述方法はReadmeを参照して下さい。",
+	"description-editorPrimaryFonts": "ユーザーが選択したエディターのメインフォント設定を保持するための値です。拡張機能によって使用されるので、ユーザーが値を設定する必要はありません。",
+	"description-editorSecondaryFonts": "ユーザーが選択したエディターのサブフォント設定を保持するための値です。拡張機能によって使用されるので、ユーザーが値を設定する必要はありません。",
+	"description-markdownPreviewPrimaryFonts": "ユーザーが選択したマークダウンプレビューのメインフォント設定を保持するための値です。拡張機能によって使用されるので、ユーザーが値を設定する必要はありません。",
+	"description-markdownPreviewSecondaryFonts": "ユーザーが選択したマークダウンプレビューのサブフォント設定を保持するための値です。拡張機能によって使用されるので、ユーザーが値を設定する必要はありません。",
+	"description-terminalPrimaryFonts": "ユーザーが選択したターミナルのメインフォント設定を保持するための値です。拡張機能によって使用されるので、ユーザーが値を設定する必要はありません。",
+	"description-terminalSecondaryFonts": "ユーザーが選択したターミナルのサブフォント設定を保持するための値です。拡張機能によって使用されるので、ユーザーが値を設定する必要はありません。"
+}

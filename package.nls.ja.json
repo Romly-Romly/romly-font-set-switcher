@@ -1,10 +1,12 @@
 {
-	"desciption-primaryFontSets": "メインフォントのリストです。詳しい記述方法はReadmeを参照して下さい。",
-	"desciption-secondaryFontSets": "サブフォントのリストです。書式はメインフォントのリストと同じです。詳しい記述方法はReadmeを参照して下さい。",
-	"description-editorPrimaryFonts": "ユーザーが選択したエディターのメインフォント設定を保持するための値です。拡張機能によって使用されるので、ユーザーが値を設定する必要はありません。",
-	"description-editorSecondaryFonts": "ユーザーが選択したエディターのサブフォント設定を保持するための値です。拡張機能によって使用されるので、ユーザーが値を設定する必要はありません。",
-	"description-markdownPreviewPrimaryFonts": "ユーザーが選択したマークダウンプレビューのメインフォント設定を保持するための値です。拡張機能によって使用されるので、ユーザーが値を設定する必要はありません。",
-	"description-markdownPreviewSecondaryFonts": "ユーザーが選択したマークダウンプレビューのサブフォント設定を保持するための値です。拡張機能によって使用されるので、ユーザーが値を設定する必要はありません。",
-	"description-terminalPrimaryFonts": "ユーザーが選択したターミナルのメインフォント設定を保持するための値です。拡張機能によって使用されるので、ユーザーが値を設定する必要はありません。",
-	"description-terminalSecondaryFonts": "ユーザーが選択したターミナルのサブフォント設定を保持するための値です。拡張機能によって使用されるので、ユーザーが値を設定する必要はありません。"
+	"desciption-primaryFontSets": "メインフォントのリストです。詳しい記述方法は README.md を参照して下さい。",
+	"desciption-secondaryFontSets": "サブフォントのリストです。書式はメインフォントのリストと同じです。詳しい記述方法は README.md を参照して下さい。",
+	"description-editorPrimaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したエディターのメインフォント設定を保持するための値です。",
+	"description-editorSecondaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したエディターのサブフォント設定を保持するための値です。",
+	"description-markdownPreviewPrimaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したマークダウンプレビューのメインフォント設定を保持するための値です。",
+	"description-markdownPreviewSecondaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したマークダウンプレビューのサブフォント設定を保持するための値です。",
+	"description-terminalPrimaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したターミナルのメインフォント設定を保持するための値です。",
+	"description-terminalSecondaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したターミナルのサブフォント設定を保持するための値です。",
+	"description-debugConsolePrimaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したデバッグコンソールのメインフォント設定を保持するための値です。",
+	"description-debugConsoleSecondaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したデバッグコンソールのサブフォント設定を保持するための値です。"
 }

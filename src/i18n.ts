@@ -30,6 +30,16 @@ const i18n =
 		'ja': 'ターミナルのサブフォントセットを選択して下さい。',
 		'en': 'Select Secondary Font Set for the terminal.'
 	},
+	'debugConsolePlaceholderPrimary':
+	{
+		'ja': 'デバッグコンソールのメインフォントセットを選択して下さい。',
+		'en': 'Select Primary Font Set for the debug console.'
+	},
+	'debugConsolePlaceholderSecondary':
+	{
+		'ja': 'デバッグコンソールのサブフォントセットを選択して下さい。',
+		'en': 'Select Secondary Font Set for the debug console.'
+	},
 	'fontSettingNotFound':
 	{
 		'ja': 'フォントセット候補が見つかりませんでした。サンプルとなる設定を書き込みますか？',
@@ -40,10 +50,15 @@ const i18n =
 		'ja': 'はい',
 		'en': 'Yes'
 	},
-	'multiple_template_found':
+	'showGroupFonts':
 	{
-		'ja': "拡張子 {0} に対応するテンプレートは {1} 個見つかりました。実行するテンプレートを選択して下さい。",
-		'en': '{0} matches {1} templates. Select one to execute.'
+		'ja': 'グループ内のフォントを表示',
+		'en': 'Show fonts in the group'
+	},
+	'namelessGroup':
+	{
+		'ja': '(名前無しグループ)',
+		'en': '(Nameless Group)'
 	}
 };
 
@@ -57,12 +72,26 @@ function i18nText(key: string, ...val: string[]): string
 {
 	const localeKey = <string>JSON.parse(<string>process.env.VSCODE_NLS_CONFIG).locale;
 	const text = i18n[key as keyof typeof i18n];
-	let s = text[localeKey as keyof typeof text];
-	for (let i = 0; i < val.length; i++)
+	if (!text)
 	{
-		s = s.replace(`{${i}}`, val[i]);
+		throw new Error(`文字列リソースのキー "${key}" が見つかりませんでした。`);
 	}
-	return s;
+	else
+	{
+		let s = text[localeKey as keyof typeof text];
+		if (!s)
+		{
+			throw new Error(`文字列リソースのキー "${key}" のロケール "${localeKey}" のテキストが見つかりませんでした。`);
+		}
+		else
+		{
+			for (let i = 0; i < val.length; i++)
+			{
+				s = s.replace(`{${i}}`, val[i]);
+			}
+			return s;
+		}
+	}
 }
 
 export default i18nText;

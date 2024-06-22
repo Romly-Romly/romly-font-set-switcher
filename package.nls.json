@@ -1,10 +1,12 @@
 {
-	"desciption-primaryFontSets": "The list of the primary fonts. See the Readme for the detail.",
-	"desciption-secondaryFontSets": "The list of the secondary fonts. The format is the same as the Primary font list. See the Readme for the detail.",
-	"description-editorPrimaryFonts": "This value holds selected primary fonts for the editor. You don't want to write anything to this value since it's used by the extension.",
-	"description-editorSecondaryFonts": "This value holds selected secondary fonts for the editor. You don't want to write anything to this value since it's used by the extension.",
-	"description-markdownPreviewPrimaryFonts": "This value holds selected primary fonts for the markdown preview. You don't want to write anything to this value since it's used by the extension.",
-	"description-markdownPreviewSecondaryFonts": "This value holds selected secondary fonts for the markdown preview. You don't want to write anything to this value since it's used by the extension.",
-	"description-terminalPrimaryFonts": "This value holds selected primary fonts for the terminal. You don't want to write anything to this value since it's used by the extension.",
-	"description-terminalSecondaryFonts": "This value holds selected secondary fonts for the terminal. You don't want to write anything to this value since it's used by the extension."
+	"desciption-primaryFontSets": "The list of the primary fonts. See the README.md for the detail.",
+	"desciption-secondaryFontSets": "The list of the secondary fonts. The format is the same as the Primary font list. See the README.md for the detail.",
+	"description-editorPrimaryFonts": "**You don't have to set this. It's used internally.** This value holds selected primary fonts for the editor.",
+	"description-editorSecondaryFonts": "**You don't have to set this. It's used internally.** This value holds selected secondary fonts for the editor.",
+	"description-markdownPreviewPrimaryFonts": "**You don't have to set this. It's used internally.** This value holds selected primary fonts for the markdown preview.",
+	"description-markdownPreviewSecondaryFonts": "**You don't have to set this. It's used internally.** This value holds selected secondary fonts for the markdown preview.",
+	"description-terminalPrimaryFonts": "**You don't have to set this. It's used internally.** This value holds selected primary fonts for the terminal.",
+	"description-terminalSecondaryFonts": "**You don't have to set this. It's used internally.** This value holds selected secondary fonts for the terminal.",
+	"description-debugConsolePrimaryFonts": "**You don't have to set this. It's used internally.** This value holds selected primary fonts for the debug console.",
+	"description-debugConsoleSecondaryFonts": "**You don't have to set this. It's used internally.** This value holds selected secondary fonts for the debug console."
 }

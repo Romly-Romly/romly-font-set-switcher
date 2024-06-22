@@ -3,10 +3,10 @@
 	"displayName": "Romly Font Set Switcher",
 	"publisher": "Romly",
 	"description": "フォントをコーディング用のメインフォント／日本語用のサブフォントのように二種類設定するものと考え、それぞれを予め設定しておいたリストからコマンドパレットを使って素早く選択できるようにする拡張機能です。 This extension enables users to choose a primary font and secondary font independently via the command palette, for the environment that users use two fonts at the same time for such as primary font that doesn't include Japanese characters for coding and secondary Japanese font for comments and etc.",
-	"version": "0.0.4",
+	"version": "0.1.0",
 	"license": "See LICENSE file",
 	"engines": {
-		"vscode": "^1.59.0"
+		"vscode": "^1.90.0"
 	},
 	"categories": [
 		"Other"
@@ -24,14 +24,7 @@
 		"url": "https://github.com/Romly-Romly/romly-font-set-switcher"
 	},
 
-	"activationEvents": [
-		"onCommand:romly-font-set-switcher.switchEditorPrimaryFontSet",
-		"onCommand:romly-font-set-switcher.switchEditorSecondaryFontSet",
-		"onCommand:romly-font-set-switcher.switchMarkdownPreviewPrimaryFontSet",
-		"onCommand:romly-font-set-switcher.switchMarkdownPreviewSecondaryFontSet",
-		"onCommand:romly-font-set-switcher.switchTerminalPrimaryFontSet",
-		"onCommand:romly-font-set-switcher.switchTerminalSecondaryFontSet"
-	],
+	"activationEvents": [],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands":
@@ -64,6 +57,16 @@
 			{
 				"command": "romly-font-set-switcher.switchTerminalSecondaryFontSet",
 				"title": "Switch Terminal Secondary Font Set",
+				"category": "Romly"
+			},
+			{
+				"command": "romly-font-set-switcher.switchDebugConsolePrimaryFontSet",
+				"title": "Switch Debug Console Primary Font Set",
+				"category": "Romly"
+			},
+			{
+				"command": "romly-font-set-switcher.switchDebugConsoleSecondaryFontSet",
+				"title": "Switch Debug Console Secondary Font Set",
 				"category": "Romly"
 			}
 		],
@@ -126,16 +129,16 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.59.0",
-		"@types/glob": "^7.1.3",
-		"@types/mocha": "^8.2.2",
-		"@types/node": "14.x",
-		"eslint": "^7.27.0",
-		"@typescript-eslint/eslint-plugin": "^4.26.0",
-		"@typescript-eslint/parser": "^4.26.0",
-		"glob": "^7.1.7",
-		"mocha": "^8.4.0",
-		"typescript": "^4.3.2",
-		"vscode-test": "^1.5.2"
+		"@types/vscode": "^1.90.0",
+		"@types/mocha": "^10.0.6",
+		"@types/node": "18.x",
+		"@typescript-eslint/eslint-plugin": "^7.11.0",
+		"@typescript-eslint/parser": "^7.11.0",
+		"eslint": "^8.57.0",
+		"esbuild": "^0.21.4",
+		"npm-run-all": "^4.1.5",
+		"typescript": "^5.4.5",
+		"@vscode/test-cli": "^0.0.9",
+		"@vscode/test-electron": "^2.4.0"
 	}
 }

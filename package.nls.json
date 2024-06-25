@@ -1,4 +1,12 @@
 {
+	"commandTitle.switchEditorPrimary": "Switch Editor Primary Font Set",
+	"commandTitle.switchEditorSecondary": "Switch Editor Secondary Font Set",
+	"commandTitle.switchMarkdownPrimary": "Switch Markdown Preview Primary Font Set",
+	"commandTitle.switchMarkdownSecondary": "Switch Markdown Preview Secondary Font Set",
+	"commandTitle.switchTerminalPrimary": "Switch Terminal Primary Font Set",
+	"commandTitle.switchTerminalSecondary": "Switch Terminal Secondary Font Set",
+	"commandTitle.switchDebugConsolePrimary": "Switch Debug Console Primary Font Set",
+	"commandTitle.switchDebugConsoleSecondary": "Switch Debug Console Secondary Font Set",
 	"desciption-primaryFontSets": "The list of the primary fonts. See the README.md for the detail.",
 	"desciption-secondaryFontSets": "The list of the secondary fonts. The format is the same as the Primary font list. See the README.md for the detail.",
 	"description-editorPrimaryFonts": "**You don't have to set this. It's used internally.** This value holds selected primary fonts for the editor.",

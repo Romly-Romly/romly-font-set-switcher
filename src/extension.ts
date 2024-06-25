@@ -5,7 +5,8 @@ import * as vscode from 'vscode';
 import * as ryutils from './ryutils';
 
 // 自前の言語設定の読み込み
-import i18nText from "./i18n";
+import i18n from "./i18n";
+import i18nTexts from "./i18nTexts";
 
 
 
@@ -79,7 +80,7 @@ export function activate(context: vscode.ExtensionContext)
 				// フォント候補が見つからない場合、警告を表示し、設定サンプルを書き込むか問い合わせる。
 				if (fontSetItems.length === 0)
 				{
-					vscode.window.showInformationMessage(i18nText('fontSettingNotFound'), i18nText('fontSettingNotFoundYesButton')).then(value =>
+					vscode.window.showInformationMessage(i18n(i18nTexts, 'fontSettingNotFound'), i18n(i18nTexts, 'fontSettingNotFoundYesButton')).then(value =>
 					{
 						if (value === undefined)
 						{
@@ -202,7 +203,7 @@ class FontSetGroup extends FontSetItemBase
 	{
 		super(label, description, targetLocation, targetPriority);
 		this.fontSets = fontSets;
-		this.buttons.push({ iconPath: new vscode.ThemeIcon('chevron-right'), tooltip: i18nText('showGroupFonts'), id: this.buttonIdGodown });
+		this.buttons.push({ iconPath: new vscode.ThemeIcon('chevron-right'), tooltip: i18n(i18nTexts, 'showGroupFonts'), id: this.buttonIdGodown });
 	}
 
 	override containsFont(fontName: string): boolean
@@ -487,7 +488,7 @@ function readFirstFontSet(where: FontSettingLocation, priority: FontPriority): F
 			if (Array.isArray(item.fontSets) && item.fontSets.length > 0)
 			{
 				// 名前が指定されていない場合
-				const name = item.name || i18nText('namelessGroup');
+				const name = item.name || i18n(i18nTexts, 'namelessGroup');
 
 				// description にはグループ内のフォントセットの数を表示
 				const description = String(item.fontSets.length);
@@ -528,7 +529,7 @@ function switchFontSet(title: string, where: FontSettingLocation, priority: Font
 		quickPick.title = title;
 	}
 	quickPick.items = fontSetItems;
-	quickPick.placeholder = i18nText(where + 'Placeholder' + capitalize(priority));
+	quickPick.placeholder = i18n(i18nTexts, where + 'Placeholder' + capitalize(priority));
 
 	// 現在設定されているフォントを選択状態にする処理
 	activateCurrentFont(quickPick, where, priority, fontSetItems);

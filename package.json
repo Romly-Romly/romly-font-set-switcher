@@ -3,7 +3,7 @@
 	"displayName": "Romly Font Set Switcher",
 	"publisher": "Romly",
 	"description": "フォントをコーディング用のメインフォント／日本語用のサブフォントのように二種類設定するものと考え、それぞれを予め設定しておいたリストからコマンドパレットを使って素早く選択できるようにする拡張機能です。 This extension enables users to choose a primary font and secondary font independently via the command palette, for the environment that users use two fonts at the same time for such as primary font that doesn't include Japanese characters for coding and secondary Japanese font for comments and etc.",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"license": "See LICENSE file",
 	"engines": {
 		"vscode": "^1.90.0"
@@ -31,42 +31,42 @@
 		[
 			{
 				"command": "romly-font-set-switcher.switchEditorPrimaryFontSet",
-				"title": "Switch Editor Primary Font Set",
+				"title": "%commandTitle.switchEditorPrimary%",
 				"category": "Romly"
 			},
 			{
 				"command": "romly-font-set-switcher.switchEditorSecondaryFontSet",
-				"title": "Switch Editor Secondary Font Set",
+				"title": "%commandTitle.switchEditorSecondary%",
 				"category": "Romly"
 			},
 			{
 				"command": "romly-font-set-switcher.switchMarkdownPreviewPrimaryFontSet",
-				"title": "Switch Markdown Preview Primary Font Set",
+				"title": "%commandTitle.switchMarkdownPrimary%",
 				"category": "Romly"
 			},
 			{
 				"command": "romly-font-set-switcher.switchMarkdownPreviewSecondaryFontSet",
-				"title": "Switch Markdown Preview Secondary Font Set",
+				"title": "%commandTitle.switchMarkdownSecondary%",
 				"category": "Romly"
 			},
 			{
 				"command": "romly-font-set-switcher.switchTerminalPrimaryFontSet",
-				"title": "Switch Terminal Primary Font Set",
+				"title": "%commandTitle.switchTerminalPrimary%",
 				"category": "Romly"
 			},
 			{
 				"command": "romly-font-set-switcher.switchTerminalSecondaryFontSet",
-				"title": "Switch Terminal Secondary Font Set",
+				"title": "%commandTitle.switchTerminalSecondary%",
 				"category": "Romly"
 			},
 			{
 				"command": "romly-font-set-switcher.switchDebugConsolePrimaryFontSet",
-				"title": "Switch Debug Console Primary Font Set",
+				"title": "%commandTitle.switchDebugConsolePrimary%",
 				"category": "Romly"
 			},
 			{
 				"command": "romly-font-set-switcher.switchDebugConsoleSecondaryFontSet",
-				"title": "Switch Debug Console Secondary Font Set",
+				"title": "%commandTitle.switchDebugConsoleSecondary%",
 				"category": "Romly"
 			}
 		],

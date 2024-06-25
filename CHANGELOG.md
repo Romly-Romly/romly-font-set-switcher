@@ -4,6 +4,14 @@
 
 [English is here](#english英語)
 
+### [0.1.1] - 2024-06-25
+
+#### 追加
+- 拡張機能のコマンド名に日本語訳を追加。
+
+#### 修正
+- 表示言語がja/en以外の時にエラーになってしまっていた不具合を修正。
+
 ### [0.1.0] - 2024-06-22
 #### 追加
 - デバッグコンソールのフォントも設定できるようにした。
@@ -52,6 +60,14 @@
 ## English(英語)
 
 [日本語(Japanese)はこちら](#日本語japanese)
+
+### [0.1.1] - 2024-06-25
+
+#### Added
+- Added Japanese translations for the command titles.
+
+#### Fixed
+- Fixed an issue where an error occurred when the display language was set to anything other than ja/en.
 
 ### [0.1.0] - 2024-06-22
 #### Added

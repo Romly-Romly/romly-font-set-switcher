@@ -3,7 +3,7 @@
 	"displayName": "Romly Font Set Switcher",
 	"publisher": "Romly",
 	"description": "フォントをコーディング用のメインフォント／日本語用のサブフォントのように二種類設定するものと考え、それぞれを予め設定しておいたリストからコマンドパレットを使って素早く選択できるようにする拡張機能です。 This extension enables users to choose a primary font and secondary font independently via the command palette, for the environment that users use two fonts at the same time for such as primary font that doesn't include Japanese characters for coding and secondary Japanese font for comments and etc.",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"license": "See LICENSE file",
 	"engines": {
 		"vscode": "^1.90.0"
@@ -67,6 +67,11 @@
 			{
 				"command": "romly-font-set-switcher.switchDebugConsoleSecondaryFontSet",
 				"title": "%commandTitle.switchDebugConsoleSecondary%",
+				"category": "Romly"
+			},
+			{
+				"command": "romly-font-set-switcher.setFontLigatures",
+				"title": "%commandTitle.setFontLigatures%",
 				"category": "Romly"
 			}
 		],

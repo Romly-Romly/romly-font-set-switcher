@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { rmSync } from 'fs';
 import { exec } from 'child_process';
+
+// 自前の言語設定の読み込み
+import * as i18n from "./i18n";
 
 
 
@@ -120,4 +122,26 @@ export function getActiveEditorDirectory(): string
 export interface RyQuickPickButton extends vscode.QuickInputButton
 {
 	id: string;
+}
+
+
+
+
+
+
+
+
+
+
+export function showErrorMessageWithDetailChannel(errorMessage: string, extensionName: string, debugErrorMessage: string, error: Error)
+{
+	vscode.window.showErrorMessage(errorMessage, i18n.default(i18n.COMMON_TEXTS, 'showErrorDetailButtonCaption')).then(() =>
+	{
+		// エラー詳細を Output Channel に表示
+		const channel = vscode.window.createOutputChannel(extensionName);
+		channel.appendLine(debugErrorMessage);
+		channel.appendLine(`Error Message: ${error.message}`);
+		channel.appendLine(`Stack Trace: ${error.stack}`);
+		channel.show();
+	});
 }

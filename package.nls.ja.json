@@ -7,6 +7,7 @@
 	"commandTitle.switchTerminalSecondary": "ターミナルのサブフォント切り替え",
 	"commandTitle.switchDebugConsolePrimary": "デバッグコンソールのメインフォント切り替え",
 	"commandTitle.switchDebugConsoleSecondary": "デバッグコンソールのサブフォント切り替え",
+	"commandTitle.setFontLigatures": "フォントのリガチャ設定",
 	"desciption-primaryFontSets": "メインフォントのリストです。詳しい記述方法は README.md を参照して下さい。",
 	"desciption-secondaryFontSets": "サブフォントのリストです。書式はメインフォントのリストと同じです。詳しい記述方法は README.md を参照して下さい。",
 	"description-editorPrimaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したエディターのメインフォント設定を保持するための値です。",

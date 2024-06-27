@@ -3,6 +3,7 @@
 import * as vscode from 'vscode';
 
 import * as ryutils from './ryutils';
+import * as ligaturesEditor from './ligaturesEditor';
 
 // 自前の言語設定の読み込み
 import i18n from "./i18n";
@@ -68,11 +69,12 @@ export function activate(context: vscode.ExtensionContext)
 	// The commandId parameter must match the command field in package.json
 
 	// 各設定可能箇所についてそれぞれのコマンドを登録
+	const COMMAND_PREFIX = 'romly-font-set-switcher.';
 	for (const location of Object.values(FontSettingLocation))
 	{
 		for (const priority of Object.values(FontPriority))
 		{
-			const command = 'romly-font-set-switcher.' + 'switch' + capitalize(location) + capitalize(priority) + 'FontSet';
+			const command = COMMAND_PREFIX + 'switch' + capitalize(location) + capitalize(priority) + 'FontSet';
 			context.subscriptions.push(vscode.commands.registerCommand(command, () =>
 			{
 				const fontSetItems = readFirstFontSet(location, priority);
@@ -99,6 +101,11 @@ export function activate(context: vscode.ExtensionContext)
 			}));
 		}
 	}
+
+	context.subscriptions.push(vscode.commands.registerCommand(COMMAND_PREFIX + 'setFontLigatures', () =>
+	{
+		ligaturesEditor.showLigaturesEditor();
+	}));
 }
 
 // this method is called when your extension is deactivated

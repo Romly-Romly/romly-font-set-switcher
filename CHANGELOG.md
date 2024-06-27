@@ -4,6 +4,11 @@
 
 [English is here](#english英語)
 
+### [0.2.0] - 2024-06-27
+
+#### 追加
+- フォントの合字や機能（ `editor.fontLigatures` ）をコマンドパレットから簡単に編集できる機能を追加。コマンドパレットから `Set Font Ligatures` で呼び出せます。
+
 ### [0.1.1] - 2024-06-25
 
 #### 追加
@@ -60,6 +65,11 @@
 ## English(英語)
 
 [日本語(Japanese)はこちら](#日本語japanese)
+
+### [0.2.0] - 2024-06-27
+
+#### Added
+- Added the feature to easily edit font ligatures and features (`editor.fontLigatures`) in the command palette. It can be executed by typing "Set Font Ligatures" in the command palette.
 
 ### [0.1.1] - 2024-06-25
 

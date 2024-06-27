@@ -96,6 +96,9 @@ export function activate(context: vscode.ExtensionContext)
 				}
 				else
 				{
+					// フォントを空にするコマンドを追加
+					fontSetItems.push(new FontSetClerCommandItem(location, priority));
+
 					switchFontSet('', location, priority, fontSetItems);
 				}
 			}));
@@ -244,6 +247,30 @@ class FontSetGroup extends FontSetItemBase
 	}
 }
 
+/**
+ * フォントセットをクリアするコマンドのための QuickPickItem
+ */
+class FontSetClerCommandItem extends FontSetItemBase
+{
+	constructor(targetLocation: FontSettingLocation, targetPriority: FontPriority)
+	{
+		super(i18n(i18nTexts, 'clearFontSet'), '', targetLocation, targetPriority);
+	}
+
+	override containsFont(fontName: string): boolean
+	{
+		return false;
+	}
+
+	override allFonts(): string[]
+	{
+		return [];
+	}
+
+	override onButtonClick(button: ryutils.RyQuickPickButton): void
+	{
+	}
+}
 
 
 

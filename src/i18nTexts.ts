@@ -62,6 +62,11 @@ const messages: LocalizedMessages =
 		ja: '(名無しグループ)',
 		en: '(Nameless Group)'
 	},
+	clearFontSet:
+	{
+		ja: 'フォントセットをクリア',
+		en: 'Clear Font Set',
+	},
 	updateLigatureFailed:
 	{
 		en: 'Failed to write editor.fontLigatures into the user settings.',

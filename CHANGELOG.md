@@ -8,6 +8,7 @@
 
 #### 追加
 - フォントの合字や機能（ `editor.fontLigatures` ）をコマンドパレットから簡単に編集できる機能を追加。コマンドパレットから `Set Font Ligatures` で呼び出せます。
+- フォントセットをクリアする（指定しない）機能を追加。
 
 ### [0.1.1] - 2024-06-25
 
@@ -69,7 +70,8 @@
 ### [0.2.0] - 2024-06-27
 
 #### Added
-- Added the feature to easily edit font ligatures and features (`editor.fontLigatures`) in the command palette. It can be executed by typing "Set Font Ligatures" in the command palette.
+- Added a feature to easily edit font ligatures and features (`editor.fontLigatures`) in the command palette. It can be executed by typing "Set Font Ligatures" in the command palette.
+- Added a feature to clear (to unset) the font set.
 
 ### [0.1.1] - 2024-06-25
 

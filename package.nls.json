@@ -17,5 +17,6 @@
 	"description-terminalPrimaryFonts": "**You don't have to set this. It's used internally.** This value holds selected primary fonts for the terminal.",
 	"description-terminalSecondaryFonts": "**You don't have to set this. It's used internally.** This value holds selected secondary fonts for the terminal.",
 	"description-debugConsolePrimaryFonts": "**You don't have to set this. It's used internally.** This value holds selected primary fonts for the debug console.",
-	"description-debugConsoleSecondaryFonts": "**You don't have to set this. It's used internally.** This value holds selected secondary fonts for the debug console."
+	"description-debugConsoleSecondaryFonts": "**You don't have to set this. It's used internally.** This value holds selected secondary fonts for the debug console.",
+	"description-hideFontsWithMissingFiles": "Hides fonts with missing font files. The font file must be specified in the 'file' field of the font list."
 }

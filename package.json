@@ -120,6 +120,12 @@
 					{
 						"type": "string",
 						"markdownDescription": "%description-terminalSecondaryFonts%"
+					},
+					"Romly-FontSetSwitcher.hideFontsWithMissingFiles":
+					{
+						"type": "boolean",
+						"default": true,
+						"markdownDescription": "%description-hideFontsWithMissingFiles%"
 					}
 				}
 			}

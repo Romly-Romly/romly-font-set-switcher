@@ -17,5 +17,6 @@
 	"description-terminalPrimaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したターミナルのメインフォント設定を保持するための値です。",
 	"description-terminalSecondaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したターミナルのサブフォント設定を保持するための値です。",
 	"description-debugConsolePrimaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したデバッグコンソールのメインフォント設定を保持するための値です。",
-	"description-debugConsoleSecondaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したデバッグコンソールのサブフォント設定を保持するための値です。"
+	"description-debugConsoleSecondaryFonts": "**設定する必要はありません。内部で使用されます。** ユーザーが選択したデバッグコンソールのサブフォント設定を保持するための値です。",
+	"description-hideFontsWithMissingFiles": "フォントファイルが見付からないフォントを非表示にします。フォントのリストの `file` にフォントファイルが書かれている必要があります。"
 }

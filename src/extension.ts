@@ -1,6 +1,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as os from 'os';
+import * as path from 'path';
+import * as fs from 'fs';
 
 import * as ryutils from './ryutils';
 import * as ligaturesEditor from './ligaturesEditor';
@@ -60,6 +63,98 @@ enum FontPriority
 
 
 
+type PlatformFontDirs = {
+	[key: string]: string[];
+};
+
+/**
+ * OSに応じたフォントのディレクトリを取得する。
+ * @returns フォントのディレクトリへのパスのリスト。
+ */
+function getFontDirs(): string[]
+{
+	const homedir = os.homedir();
+	const platformFontDirs: PlatformFontDirs =
+	{
+		darwin: [
+			path.join(homedir, 'Library', 'Fonts'),
+			'/Library/Fonts',
+			'/System/Library/Fonts'
+		],
+		win32: [
+			path.join(homedir, 'AppData', 'Local', 'Microsoft', 'Windows', 'Fonts'),
+			'C:\\Windows\\Fonts'
+		],
+		linux: [
+			path.join(homedir, '.fonts'),
+			'/usr/local/share/fonts',
+			'/usr/share/fonts'
+		]
+	};
+
+	switch (os.platform())
+	{
+		case 'darwin':
+			return platformFontDirs.darwin;
+		case 'win32':
+			return platformFontDirs.win32;
+		default:
+			return platformFontDirs.linux;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+/**
+ * 指定されたファイル名のフォントがOS毎のフォントディレクトリに存在していれば true を返す。
+ * @param fontFilename
+ * @returns
+ */
+function isFontFileExists(fontFilename: string): boolean
+{
+	const fontDirs = getFontDirs();
+	for (const dir of fontDirs)
+	{
+		const fontFilePath = path.join(dir, fontFilename);
+		if (fs.existsSync(fontFilePath))
+		{
+			return true;
+		}
+
+		// サブディレクトリも1階層だけチェック
+		const subDirs = fs.readdirSync(dir, { withFileTypes: true })
+			.filter(dirent => dirent.isDirectory())
+			.map(dirent => path.join(dir, dirent.name));
+
+		for (const subDir of subDirs)
+		{
+			const fontFilePath = path.join(subDir, fontFilename);
+			if (fs.existsSync(fontFilePath))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
+
+
+
+
+
+
+
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext)
@@ -77,7 +172,7 @@ export function activate(context: vscode.ExtensionContext)
 			const command = COMMAND_PREFIX + 'switch' + capitalize(location) + capitalize(priority) + 'FontSet';
 			context.subscriptions.push(vscode.commands.registerCommand(command, () =>
 			{
-				const fontSetItems = readFirstFontSet(location, priority);
+				let fontSetItems = readFirstFontSet(location, priority);
 
 				// フォント候補が見つからない場合、警告を表示し、設定サンプルを書き込むか問い合わせる。
 				if (fontSetItems.length === 0)
@@ -96,6 +191,26 @@ export function activate(context: vscode.ExtensionContext)
 				}
 				else
 				{
+					const config = vscode.workspace.getConfiguration(CONFIG_SECTION);
+					const hideFontsWithMissingFiles = config.get<boolean>('hideFontsWithMissingFiles') ?? true;
+					if (hideFontsWithMissingFiles)
+					{
+						// フォントファイルが見付からないアイテムを削除
+						fontSetItems = fontSetItems.filter(item =>
+						{
+							if (item instanceof FontSetItemBase)
+							{
+								if (item.fontFilename !== undefined && item.fontFilename.length > 0)
+								{
+									const result = isFontFileExists(item.fontFilename);
+									return result;
+								}
+							}
+
+							return true;
+						});
+					}
+
 					// フォントを空にするコマンドを追加
 					fontSetItems.push(new FontSetClerCommandItem(location, priority));
 
@@ -133,6 +248,8 @@ abstract class FontSetItemBase implements vscode.QuickPickItem
 
 	readonly targetLocation: FontSettingLocation;
 	readonly targetPriority: FontPriority;
+
+	public fontFilename: string = '';
 
 	constructor(label: string, description: string, targetLocation: FontSettingLocation, targetPriority: FontPriority)
 	{
@@ -313,12 +430,14 @@ function getFontSettingPrefix(where: FontSettingLocation): string
 
 
 
+type FontSet = { fonts: string[]; name: string; filename: string; };
+
 /**
  * フォントセットの設定から取得したオブジェクトを、QuickPick用のFontSetItemに変換する。
  * @param fontSet
  * @returns
  */
-function fontSetConfigToFontSetItem(where: FontSettingLocation, priority: FontPriority, fontSet: { fonts: string[]; name: string; }): FontSetItem2
+function fontSetConfigToFontSetItem(where: FontSettingLocation, priority: FontPriority, fontSet: { fonts: string[]; name: string }): FontSetItem2
 {
 	// 説明文には全てのフォント名をカンマ区切りで羅列
 	let allFontNames = fontSet.fonts.join(', ');
@@ -330,7 +449,7 @@ function fontSetConfigToFontSetItem(where: FontSettingLocation, priority: FontPr
 		label = allFontNames;
 	}
 
-	// ラベルと説明文が同じの場合は説明文を省略
+	// ラベルと説明文が同じ場合は説明文を省略
 	if (label === allFontNames)
 	{
 		allFontNames = '';
@@ -528,16 +647,20 @@ function readFirstFontSet(where: FontSettingLocation, priority: FontPriority): F
 
 				// description にはグループ内のフォントセットの数を表示
 				const description = String(item.fontSets.length);
-				fontSetItems.push(new FontSetGroup(name, description, where, priority, item.fontSets.map((fontSet: { fonts: string[]; name: string; })  =>
+				const fontSetGroup = new FontSetGroup(name, description, where, priority, item.fontSets.map((fontSet: FontSet) =>
 				{
 					return fontSetConfigToFontSetItem(where, priority, fontSet);
-				})));
+				}));
+				fontSetGroup.fontFilename = item['file'];
+				fontSetItems.push(fontSetGroup);
 			}
 			// フォントが書かれていない場合はスキップ
 			else if (Array.isArray(item.fonts) && item.fonts.length > 0 &&
 				item.fonts.every((font: string) => typeof font === 'string'))
 			{
-				fontSetItems.push(fontSetConfigToFontSetItem(where, priority, item));
+				const fontSetItem = fontSetConfigToFontSetItem(where, priority, item);
+				fontSetItem.fontFilename = item['file'];
+				fontSetItems.push(fontSetItem);
 			}
 		});
 	}
@@ -690,7 +813,6 @@ class CurrentSetting
 
 	public restore(): void
 	{
-		console.log('restored');
 		const config = vscode.workspace.getConfiguration(this._configSection);
 		if (this._font !== undefined)
 		{
@@ -739,15 +861,31 @@ function switchFontSet(title: string, where: FontSettingLocation, priority: Font
 	// 現在設定されているフォントを選択状態にする処理
 	activateCurrentFont(quickPick, where, priority, fontSetItems);
 
+	// 遅延実行用のタイマー
+	let debounceTimer: NodeJS.Timeout | undefined;
+
 	enum QuickPickState { beforeShow, shown, accepted };
 	let quickPickAccepted = QuickPickState.beforeShow;
 	quickPick.onDidChangeActive(items =>
 	{
-		if (quickPickAccepted === QuickPickState.shown &&
-			items[0] instanceof FontSetItemBase)
+		// カーソルキーを押しっぱなしにした場合など、連続でアクティブ項目を変更した時に毎回フォント変更すると重くなってしまうので、遅延実行する。
+		if (debounceTimer)
 		{
-			items[0].onActive();
+			clearTimeout(debounceTimer);
 		}
+
+		debounceTimer = setTimeout(() =>
+		{
+			const selectedItem = items[0];
+			if (selectedItem)
+			{
+				if (quickPickAccepted === QuickPickState.shown &&
+					selectedItem instanceof FontSetItemBase)
+				{
+					selectedItem.onActive();
+				}
+			}
+		}, 150);
 	});
 	quickPick.onDidAccept(() =>
 	{
@@ -759,9 +897,13 @@ function switchFontSet(title: string, where: FontSettingLocation, priority: Font
 	});
 	quickPick.onDidHide(() =>
 	{
-		console.log('onDidHide:' + String(quickPickAccepted));
 		if (quickPickAccepted === QuickPickState.shown)
 		{
+			if (debounceTimer)
+			{
+				clearTimeout(debounceTimer);
+			}
+
 			// 選択しなかったらフォントを元に戻す
 			currentSetting.restore();
 			quickPick.dispose();

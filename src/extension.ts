@@ -6,8 +6,8 @@ import * as ryutils from './ryutils';
 import * as ligaturesEditor from './ligaturesEditor';
 
 // 自前の言語設定の読み込み
-import i18n from "./i18n";
-import i18nTexts from "./i18nTexts";
+import { i18n } from "./i18n";
+import { MESSAGES, ProjectMessageKey } from "./i18nTexts";
 
 
 
@@ -82,7 +82,7 @@ export function activate(context: vscode.ExtensionContext)
 				// フォント候補が見つからない場合、警告を表示し、設定サンプルを書き込むか問い合わせる。
 				if (fontSetItems.length === 0)
 				{
-					vscode.window.showInformationMessage(i18n(i18nTexts, 'fontSettingNotFound'), i18n(i18nTexts, 'fontSettingNotFoundYesButton')).then(value =>
+					vscode.window.showInformationMessage(i18n(MESSAGES.fontSettingNotFound), i18n(MESSAGES.fontSettingNotFoundYesButton)).then(value =>
 					{
 						if (value === undefined)
 						{
@@ -99,7 +99,7 @@ export function activate(context: vscode.ExtensionContext)
 					// フォントを空にするコマンドを追加
 					fontSetItems.push(new FontSetClerCommandItem(location, priority));
 
-					switchFontSet('', location, priority, fontSetItems);
+					switchFontSet(i18n(MESSAGES.firstTitle), location, priority, fontSetItems);
 				}
 			}));
 		}
@@ -112,7 +112,9 @@ export function activate(context: vscode.ExtensionContext)
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate()
+{
+}
 
 
 
@@ -127,7 +129,7 @@ abstract class FontSetItemBase implements vscode.QuickPickItem
 {
 	label: string;
 	description: string;
-	buttons: ryutils.RyQuickPickButton[];
+	buttons: ryutils.IRyQuickPickButton[];
 
 	readonly targetLocation: FontSettingLocation;
 	readonly targetPriority: FontPriority;
@@ -146,7 +148,7 @@ abstract class FontSetItemBase implements vscode.QuickPickItem
 
 	abstract allFonts(): string[];
 
-	abstract onButtonClick(button: ryutils.RyQuickPickButton): void;
+	abstract onButtonClick(button: ryutils.IRyQuickPickButton): void;
 
 	onActive(): void
 	{
@@ -195,7 +197,7 @@ class FontSetItem2 extends FontSetItemBase
 		return this.fonts;
 	}
 
-	override onButtonClick(button: ryutils.RyQuickPickButton): void
+	override onButtonClick(button: ryutils.IRyQuickPickButton): void
 	{
 	}
 }
@@ -205,7 +207,7 @@ class FontSetItem2 extends FontSetItemBase
  */
 class FontSetGroup extends FontSetItemBase
 {
-	private readonly buttonIdGodown: string = 'copy';
+	private readonly _buttonIdGodown: string = 'copy';
 
 	fontSets: FontSetItemBase[] = [];
 
@@ -213,7 +215,7 @@ class FontSetGroup extends FontSetItemBase
 	{
 		super(label, description, targetLocation, targetPriority);
 		this.fontSets = fontSets;
-		this.buttons.push({ iconPath: new vscode.ThemeIcon('chevron-right'), tooltip: i18n(i18nTexts, 'showGroupFonts'), id: this.buttonIdGodown });
+		this.buttons.push({ iconPath: new vscode.ThemeIcon('chevron-right'), tooltip: i18n(MESSAGES.showGroupFonts), id: this._buttonIdGodown });
 	}
 
 	override containsFont(fontName: string): boolean
@@ -238,9 +240,9 @@ class FontSetGroup extends FontSetItemBase
 		return allFonts;
 	}
 
-	override onButtonClick(button: ryutils.RyQuickPickButton): void
+	override onButtonClick(button: ryutils.IRyQuickPickButton): void
 	{
-		if (button.id === this.buttonIdGodown)
+		if (button.id === this._buttonIdGodown)
 		{
 			switchFontSet(this.label, this.targetLocation, this.targetPriority, this.fontSets);
 		}
@@ -254,7 +256,7 @@ class FontSetClerCommandItem extends FontSetItemBase
 {
 	constructor(targetLocation: FontSettingLocation, targetPriority: FontPriority)
 	{
-		super(i18n(i18nTexts, 'clearFontSet'), '', targetLocation, targetPriority);
+		super(i18n(MESSAGES.clearFontSet), '', targetLocation, targetPriority);
 	}
 
 	override containsFont(fontName: string): boolean
@@ -267,7 +269,7 @@ class FontSetClerCommandItem extends FontSetItemBase
 		return [];
 	}
 
-	override onButtonClick(button: ryutils.RyQuickPickButton): void
+	override onButtonClick(button: ryutils.IRyQuickPickButton): void
 	{
 	}
 }
@@ -522,7 +524,7 @@ function readFirstFontSet(where: FontSettingLocation, priority: FontPriority): F
 			if (Array.isArray(item.fontSets) && item.fontSets.length > 0)
 			{
 				// 名前が指定されていない場合
-				const name = item.name || i18n(i18nTexts, 'namelessGroup');
+				const name = item.name || i18n(MESSAGES.namelessGroup);
 
 				// description にはグループ内のフォントセットの数を表示
 				const description = String(item.fontSets.length);
@@ -551,19 +553,188 @@ function readFirstFontSet(where: FontSettingLocation, priority: FontPriority): F
 
 
 
+
+function adjustEditorNumberSetting(key: string, delta: number, min: number, max: number): void
+{
+	const EDITOR_CONFIG = vscode.workspace.getConfiguration('editor');
+	let fontSize = EDITOR_CONFIG.get<number>(key);
+	if (fontSize !== undefined)
+	{
+		fontSize = Math.min(Math.max(Math.round(fontSize + delta), min), max);
+		EDITOR_CONFIG.update(key, fontSize, vscode.ConfigurationTarget.Global);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+/**
+ * VSCode のエディタのフォントサイズを増減する。
+ * @param delta
+ */
+function adjustFontSize(delta: number): void
+{
+	// VS Code の設定によると、最大値は 100、最小値は 6 だったので
+	adjustEditorNumberSetting('fontSize', delta, 6, 100);
+}
+
+
+
+
+
+
+
+
+
+
+function adjustLetterSpacing(delta: number): void
+{
+	// これは最小値と最大値わからなかったので適当に100とした
+	adjustEditorNumberSetting('letterSpacing', delta, -100, 100);
+}
+
+
+
+
+
+
+
+
+
+
+// エディタのどの設定を調整するかの指定。
+enum RyEditorSettingAttribute { FontSize, LetterSpacing }
+
+/**
+ * フォントサイズを変更する QuickPick 用ボタン。
+ * 2024/07/09
+ */
+class RyFontSizeButton implements vscode.QuickInputButton
+{
+	readonly iconPath: vscode.Uri | {
+		light: vscode.Uri;
+		dark: vscode.Uri;
+	} | vscode.ThemeIcon;
+
+	readonly tooltip: string;
+
+	private readonly _attribute: RyEditorSettingAttribute;
+
+	private readonly _increase: boolean;
+
+	constructor(attr: RyEditorSettingAttribute, increase: boolean)
+	{
+		switch (attr)
+		{
+			case RyEditorSettingAttribute.FontSize:
+				this.iconPath = new vscode.ThemeIcon(increase ? 'add' : 'remove');
+				this.tooltip = i18n(increase ? MESSAGES.tooltipIncreaseFontSize : MESSAGES.tooltipDecreaseFontSize);
+				break;
+			case RyEditorSettingAttribute.LetterSpacing:
+				this.iconPath = new vscode.ThemeIcon(increase ? 'chevron-right' : 'chevron-left');
+				this.tooltip = i18n(increase ? MESSAGES.tooltipIncreaseLetterSpacing : MESSAGES.tooltipDecreaseLetterSpacing);
+				break;
+		}
+		this._attribute = attr;
+		this._increase = increase;
+	}
+
+	public onClick(): void
+	{
+		switch (this._attribute)
+		{
+			case RyEditorSettingAttribute.FontSize:
+				adjustFontSize(this._increase ? 1 : -1);
+				break;
+			case RyEditorSettingAttribute.LetterSpacing:
+				adjustLetterSpacing(this._increase ? 1 : -1);
+				break;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+/**
+ * キャンセル用に現在のフォント、行間と字間を保持しておくためのクラス。
+ * 2024/07/09
+ */
+class CurrentSetting
+{
+	private _configSection: string;
+	private _font: string | undefined;
+	private _fontSize: number | undefined;
+	private _letterSpacing: number | undefined;
+
+	constructor(configurationSection: string)
+	{
+		this._configSection = configurationSection;
+		const config = vscode.workspace.getConfiguration(configurationSection);
+		this._font = config.get<string>('fontFamily');
+		this._fontSize = config.get<number>('fontSize');
+		this._letterSpacing = config.get<number>('letterSpacing');
+	}
+
+	public restore(): void
+	{
+		console.log('restored');
+		const config = vscode.workspace.getConfiguration(this._configSection);
+		if (this._font !== undefined)
+		{
+			config.update('fontFamily', this._font, vscode.ConfigurationTarget.Global);
+		}
+		if (this._fontSize !== undefined)
+		{
+			config.update('fontSize', this._fontSize, vscode.ConfigurationTarget.Global);
+		}
+		if (this._letterSpacing !== undefined)
+		{
+			config.update('letterSpacing', this._letterSpacing, vscode.ConfigurationTarget.Global);
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
 function switchFontSet(title: string, where: FontSettingLocation, priority: FontPriority, fontSetItems: FontSetItemBase[]): void
 {
-	// キャンセル用に現在のフォントを取得
-	const currentFont = vscode.workspace.getConfiguration(getFontSettingPrefix(where)).get('fontFamily') as string;
+	// キャンセル用に現在の設定を取得
+	const currentSetting = new CurrentSetting(getFontSettingPrefix(where));
 
 	// QuickPickリストを表示する
-	const quickPick: vscode.QuickPick<FontSetItemBase> = vscode.window.createQuickPick();
+	const quickPick: vscode.QuickPick<vscode.QuickPickItem> = vscode.window.createQuickPick();
 	if (title.length > 0)
 	{
 		quickPick.title = title;
 	}
 	quickPick.items = fontSetItems;
-	quickPick.placeholder = i18n(i18nTexts, where + 'Placeholder' + capitalize(priority));
+	quickPick.placeholder = i18n(MESSAGES[`${where}Placeholder${capitalize(priority)}` as ProjectMessageKey]);
+	quickPick.buttons = [
+		new RyFontSizeButton(RyEditorSettingAttribute.LetterSpacing, false),
+		new RyFontSizeButton(RyEditorSettingAttribute.LetterSpacing, true),
+		new RyFontSizeButton(RyEditorSettingAttribute.FontSize, false),
+		new RyFontSizeButton(RyEditorSettingAttribute.FontSize, true),
+	];
 
 	// 現在設定されているフォントを選択状態にする処理
 	activateCurrentFont(quickPick, where, priority, fontSetItems);
@@ -572,7 +743,8 @@ function switchFontSet(title: string, where: FontSettingLocation, priority: Font
 	let quickPickAccepted = QuickPickState.beforeShow;
 	quickPick.onDidChangeActive(items =>
 	{
-		if (quickPickAccepted === QuickPickState.shown)
+		if (quickPickAccepted === QuickPickState.shown &&
+			items[0] instanceof FontSetItemBase)
 		{
 			items[0].onActive();
 		}
@@ -587,12 +759,22 @@ function switchFontSet(title: string, where: FontSettingLocation, priority: Font
 	});
 	quickPick.onDidHide(() =>
 	{
+		console.log('onDidHide:' + String(quickPickAccepted));
 		if (quickPickAccepted === QuickPickState.shown)
 		{
 			// 選択しなかったらフォントを元に戻す
-			vscode.workspace.getConfiguration(getFontSettingPrefix(where)).update('fontFamily', currentFont, true);
+			currentSetting.restore();
 			quickPick.dispose();
 			quickPickAccepted = QuickPickState.beforeShow;
+		}
+	});
+
+	// クイックピック自体のボタンの押下時の処理
+	quickPick.onDidTriggerButton(button =>
+	{
+		if (button instanceof RyFontSizeButton)
+		{
+			button.onClick();
 		}
 	});
 
@@ -600,10 +782,13 @@ function switchFontSet(title: string, where: FontSettingLocation, priority: Font
 	quickPick.onDidTriggerItemButton(e =>
 	{
 		quickPick.hide();
-		const button = e.button as ryutils.RyQuickPickButton;
-		e.item.onButtonClick(button);
+		const button = e.button as ryutils.IRyQuickPickButton;
+		if (e.item instanceof FontSetItemBase)
+		{
+			e.item.onButtonClick(button);
+		}
 	});
 
-	quickPick.show();
 	quickPickAccepted = QuickPickState.shown;
+	quickPick.show();
 }

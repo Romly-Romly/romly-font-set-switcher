@@ -3,8 +3,8 @@ import * as vscode from 'vscode';
 import * as ryutils from './ryutils';
 
 // 自前の言語設定の読み込み
-import i18n from "./i18n";
-import i18nTexts from "./i18nTexts";
+import { i18n } from "./i18n";
+import { MESSAGES, ProjectMessageKey } from "./i18nTexts";
 
 
 
@@ -67,15 +67,15 @@ function createLigaturesEditorItems(): vscode.QuickPickItem[]
 	function createCategoryItems(category: string, items: string[]): vscode.QuickPickItem[]
 	{
 		return [
-			{ label: i18n(i18nTexts, category), kind: vscode.QuickPickItemKind.Separator },
-			...items.map(item => new LigaturesEditorItem(i18n(i18nTexts, item), item))
+			{ label: i18n(MESSAGES[category as ProjectMessageKey]), kind: vscode.QuickPickItemKind.Separator },
+			...items.map(item => new LigaturesEditorItem(i18n(MESSAGES[item as ProjectMessageKey]), item))
 		];
 	}
 
 	function createStylisticSets(): vscode.QuickPickItem[]
 	{
 		const items: vscode.QuickPickItem[] = [];
-		const ssTranslated = i18n(i18nTexts, 'ss');
+		const ssTranslated = i18n(MESSAGES.ss);
 		for (let i = 1; i <= 20; i++)
 		{
 			const padded = i.toString().padStart(2, '0');
@@ -154,7 +154,8 @@ export function showLigaturesEditor(): void
 	// 初期選択項目を設定
 	quickPick.selectedItems = quickPick.items
 		.filter((item): item is LigaturesEditorItem => item instanceof LigaturesEditorItem && enabledLigatures.get(item.feature) === true);
-	quickPick.onDidChangeSelection(items => {
+	quickPick.onDidChangeSelection(items =>
+	{
 		// 設定を反映
 		const newLigatures = items
 			.filter((item): item is LigaturesEditorItem => item instanceof LigaturesEditorItem)
@@ -162,28 +163,33 @@ export function showLigaturesEditor(): void
 			.join(', ');
 		vscode.workspace.getConfiguration(SECTION).update('fontLigatures', newLigatures, vscode.ConfigurationTarget.Global)
 			.then(
-				() => {},
+				() =>
+				{
+				},
 				error =>
 				{
 					// エラー処理
-					ryutils.showErrorMessageWithDetailChannel(i18n(i18nTexts, 'updateLigatureFailed'), EXTENSION_NAME, 'Error occurred while updating editor.fontLigatures.', error);
+					ryutils.showErrorMessageWithDetailChannel(i18n(MESSAGES.updateLigatureFailed), EXTENSION_NAME, 'Error occurred while updating editor.fontLigatures.', error);
 				});
 	});
-	quickPick.onDidAccept(() => {
+	quickPick.onDidAccept(() =>
+	{
 		isAccepted = true;
 		quickPick.hide();
 	});
-	quickPick.onDidHide(() => {
+	quickPick.onDidHide(() =>
+	{
 		// 設定を元に戻す
 		if (!isAccepted)
 		{
 			vscode.workspace.getConfiguration(SECTION).update('fontLigatures', currentLigatures, vscode.ConfigurationTarget.Global)
 				.then(
-					() => {},
+					() =>
+					{},
 					error =>
 					{
 						// エラー処理
-						ryutils.showErrorMessageWithDetailChannel(i18n(i18nTexts, 'updateLigatureFailed'), EXTENSION_NAME, 'Error occurred while reverting editor.fontLigatures.', error);
+						ryutils.showErrorMessageWithDetailChannel(i18n(MESSAGES.updateLigatureFailed), EXTENSION_NAME, 'Error occurred while reverting editor.fontLigatures.', error);
 					});
 		}
 		quickPick.dispose();
